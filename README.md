@@ -116,6 +116,12 @@ A daemon that embeds controllers inside the control plane, such as:
 
 This component runs on every node, including the control plane.  
 
+It makes sure that containers are started, stopped or restarted appropriately.  
+
+Any instruction that comes from the control plane is received by kubelet.  
+
+kubelet is the sole connection of each node to the rest of the cluster.  
+
 
 
 14/170
