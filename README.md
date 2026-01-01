@@ -2,7 +2,7 @@
 
 https://youtu.be/MTHGoGUFpvE?si=1H6K97HEiUpilqvt
 
-# Developer Context
+# Application Developer Context
 
 We got some code plus the dependencies needed for our application to run.  
 
@@ -36,7 +36,7 @@ All those challenges are the reasons why Kubernetes (k8s) was invented.
 
 And k8s answers many other challenges that we haven't mentioned yet...  
 
-# How does k8s work?
+# k8s Pods, Nodes and Clusters
 
 Containers work exactly the same in k8s as they do outside of it.  
 
@@ -46,7 +46,7 @@ k8s manages Pods, not the containers inside of them.
 
 Pods are the simplest deployable unit in k8s world. And they can encapsulate one or more containers.  
 
-## What's a cluster
+## What's a cluster?
 
 Pods and their containers still need a host machine, a node that will provide resources (storage, RAM and CPU).  
 
@@ -63,6 +63,24 @@ Sends instructions to the worker nodes.
 
 ## kubectl
 
-That is the CLI tool that is going to be installed inside of our personal workstation.
+That is the CLI tool that is going to be installed inside of our personal workstation.  
 
-8/170
+kubectl enables us to access our k8s cluster. We do so by connecting to the control plane (controller node).  
+
+## kubeconfig
+
+In order for kubectl to be able to find and access a k8s cluster, we need to use a **kubeconfig** file.  
+
+This is a YAML file that requires the use of `kubectl config` commands to be generated.  
+
+And this file needs to be on the same machine where kubectl is installed.
+
+## API Server
+
+All our kubectl requests are going to be received by the API server.  
+
+All communication that occurs inside of a k8s cluster is done through the API Server.  
+
+
+
+10/170
