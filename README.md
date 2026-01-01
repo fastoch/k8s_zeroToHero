@@ -2,7 +2,7 @@
 
 https://youtu.be/MTHGoGUFpvE?si=1H6K97HEiUpilqvt
 
-# Context
+# Developer Context
 
 We got some code plus the dependencies needed for our application to run.  
 
