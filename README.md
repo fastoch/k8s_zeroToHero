@@ -16,9 +16,13 @@ Containers are very easy to spin up, and equally easy to replace.
 
 Which means we can update and scale our application in a matter of seconds.  
 
-And containerized apps run the same regardless of the host system, which is the reason why containerization was invented...
+And containerized apps run the same regardless of the host system, which is actually the reason why containerization was invented...  
+
+We can also create multiple copies of a container to ensure our app (or a given functionality of our app) is always available.  
 
 # Why should we even use k8s?
+
+Containers run on top of an existing environment (host), usually a VM but it can also be a physical machine.  
 
 
 
