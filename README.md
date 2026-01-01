@@ -97,6 +97,25 @@ Losing etcd is like lobotomizing your cluster.
 
 ## Scheduler
 
+Also a control plane's component.  
+
+Responsible for selecting the best node for placing a given Pod.  
+
+Once the Pod has been placed on a node, the Scheduler's job is done and **kubelet** then takes over to deploy and observe the Pod.  
+
+## Controller manager
+
+A daemon that embeds controllers inside the control plane, such as:
+- replication controller
+- endpoints controller
+- namespace controller
+- service accounts controller
+- etc.
+
+## kubelet
+
+This component runs on every node, including the control plane.  
 
 
-12/170
+
+14/170
