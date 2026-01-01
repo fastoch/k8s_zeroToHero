@@ -1,1 +1,3 @@
-# k8s_zeroToHero
+# Source material
+
+https://youtu.be/MTHGoGUFpvE?si=8ztuibLYEESTLAVd
