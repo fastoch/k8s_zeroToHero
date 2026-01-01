@@ -55,7 +55,14 @@ The combination of multiple nodes is called a **cluster**.
 ## Control Plane & worker nodes
 
 There a 2 kinds of nodes in k8s:
-- control plane: contains all the tools required to keep our cluster running.
-- worker node: the vast majority of Pods are created inside worker nodes, also called **workers**. These nodes are the ones running our containerized services
+- **control plane**: contains all the tools required to keep our cluster running.
+Sends instructions to the worker nodes.
+- **worker node**: the vast majority of Pods are created inside of worker nodes. These nodes are the ones running our containerized services.
 
-7/170
+# k8s components
+
+## kubectl
+
+That is the CLI tool that is going to be installed inside of our personal workstation.
+
+8/170
