@@ -77,10 +77,26 @@ And this file needs to be on the same machine where kubectl is installed.
 
 ## API Server
 
+That's one of the control plane's components.  
+
 All our kubectl requests are going to be received by the API server.  
 
 All communication that occurs inside of a k8s cluster is done through the API Server.  
 
+## etcd
+
+Another one of the control plane's components.  
+
+Was around long before k8s.  
+
+It's a distributed key-value store that provides a reliable way to store data that needs to be accessed by a distributed system or a cluster of machines.  
+
+etcd stores the entire configuration of a cluster, its state. It's the cluster's memory.  
+
+Losing etcd is like lobotomizing your cluster.  
+
+## Scheduler
 
 
-10/170
+
+12/170
