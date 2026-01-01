@@ -22,10 +22,20 @@ We can also create multiple copies of a container to ensure our app (or a given 
 
 # Why should we even use k8s?
 
-Containers run on top of an existing environment (host), usually a VM but it can also be a physical machine.  
+## Managing many containers on multiple nodes
 
-...  
+Containers run on top of an existing host environment (a node), usually a VM but it can also be a physical machine.  
+
+And we can create as many containers as we want so long as the node's resources permit...  
+
+Once the node has reached its maximum number of containers, we need to use another node to keep scaling up.  
+
+And if we don't use a new node, our containers could die without us knowing...
+
+If we only one node and it dies, we lose all the containers that depend on it, which is another reason for using backup nodes.  
+
+
 
 All those challenges are the reasons why Kubernetes (k8s) was invented in 2014.
 
-3/170
+4/170
