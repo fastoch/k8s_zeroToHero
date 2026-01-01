@@ -6,9 +6,9 @@ https://youtu.be/MTHGoGUFpvE?si=1H6K97HEiUpilqvt
 
 We got some code plus the dependencies needed for our application to run.  
 
-Our application is divided into multiple functional parts called **Microservices**.  
+Our application is divided into multiple functional parts called **microservices**.  
 
-For each Microservice, we'll put the corresponding code and its dependencies inside of an isolated environment called a **container**.  
+For each microservice, we'll put the corresponding code and its dependencies inside of an isolated environment called a **container**.  
 
 # Containers offer many advantages
 
