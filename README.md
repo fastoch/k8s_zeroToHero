@@ -20,7 +20,7 @@ And containerized apps run the same regardless of the host system, which is actu
 
 We can also create multiple copies of a container to ensure our app (or a given functionality of our app) is always available.  
 
-# Why should we even use k8s?
+# Why should we even use k8s? Containers are not enough
 
 Containers run on top of an existing host environment (a node), usually a VM but it can also be a physical machine.  
 
