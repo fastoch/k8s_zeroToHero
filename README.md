@@ -149,9 +149,10 @@ In YAML, lists look like this:
 Dictionaries are all about key-value pairs:
 ```yaml
 flavor: yogurt
-brand: 
-expiration:
+brand: Hershey's
+expiration: October 30
+delicious: true
 ```
 
 
-22/170
+23/170
