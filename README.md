@@ -114,7 +114,23 @@ and how the application inside of it should be set up.
 
 # Creating a Pod
 
+1. We use `kubectl` commands to create a Pod
+2. This is received by the API server inside the control plane (or controller node)
+3. The API server tells etcd about our Pod creation request
+4. if all checks pass, etcd sends a 200 HTTP response to the API server, which means "ok for creating a new pod"
+5. the API server transmits this 200 response back to us (at the command line)
+6. the API server then asks the Scheduler which node this new Pod will be created on 
+7. the Scheduler makes a decision and informs the API server about the Pod's location
+8. the API server informs etcd about the new Pod's location and tells the Scheduler to go ahead and place the new Pod
+9. the API server reaches out to the kubelet component located on the worker node where our new Pod will be created
+10. on the chosen worker node, kubelet runs all the necessary commands so the container runtime builds the container
+11. And kubelet is also responsible for making the Pod in which the container will live
+
+**Precision**:  
+kubelet first creates the Pod, and only then it asks the container runtime to build the container inside of that Pod.  
+
+Once the Pod has been created, kubelet will be constantly feeding status updates to the API server.  
+And the API server will in turn make sure that these updates are being recorded to etcd.  
 
 
-
-16/170
+20/170
