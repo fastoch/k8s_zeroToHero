@@ -132,5 +132,10 @@ kubelet first creates the Pod, and only then it asks the container runtime to bu
 Once the Pod has been created, kubelet will be constantly feeding status updates to the API server.  
 And the API server will in turn make sure that these updates are being recorded to etcd.  
 
+# YAML Manifests
 
-20/170
+When working with YAML, there are 2 types of data that you need to be aware of:
+- lists (or sequences)
+- 
+
+21/170
