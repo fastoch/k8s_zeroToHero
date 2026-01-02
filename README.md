@@ -136,6 +136,22 @@ And the API server will in turn make sure that these updates are being recorded 
 
 When working with YAML, there are 2 types of data that you need to be aware of:
 - lists (or sequences)
-- 
+- dictionaries (or mappings)
 
-21/170
+In YAML, lists look like this:
+```yaml
+- milk
+- eggs
+- ice cream
+- bread
+```
+
+Dictionaries are all about key-value pairs:
+```yaml
+flavor: yogurt
+brand: 
+expiration:
+```
+
+
+22/170
