@@ -122,6 +122,10 @@ Any instruction that comes from the control plane is received by kubelet.
 
 kubelet is the sole connection of each node to the rest of the cluster.  
 
+Needless to say that kubelet is one crucial component...  
+
+## Container Runtime 
+
 
 
 14/170
