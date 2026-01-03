@@ -204,4 +204,15 @@ Note that the "Pod" value needs to be written with an uppercase P.
 - `kubectl describe <resource_type> <resource_name>` brings up detailed information about a resource, useful for troubleshooting
 - `kubectl delete <resource_type> <resource_name>` or `kubectl delete -f my-manifest.yml`
 
-37/170
+# Creating a Resource quota
+
+A ResourceQuota in k8s defines a hard cap on cumulative resource usage and object counts within a single namespace.  
+In the `spec` section of a manifest, this would look something like that:
+```yaml
+spec:
+  hard:
+    cpu: "1"
+    memory: 1Gi
+```
+
+38/170
