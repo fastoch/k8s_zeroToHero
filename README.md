@@ -154,5 +154,42 @@ expiration: October 30
 delicious: true
 ```
 
+Actual YAML manifests combine these 2 types: 
+```yaml
+icecream:
+  flavor: yogurt
+  brand: Hershey's
+  expiration: October 30
+  toppings:
+    - sprinkles
+    - fudge
+    - whipped cream
+  delicious: true
+```
 
-23/170
+>[!important]
+>Indentation is very important in YAML files.
+
+## Creating your own YAML manifest
+
+There are tons of templates available online, and you'll easily find the one that matches your need.  
+
+All manifests contain the following keys:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+  annotations:
+spec:
+  containers:
+  - name:
+    image:
+    ports:
+```
+Note that the "Pod" value needs to be written with an uppercase P.  
+
+
+
+28/170
