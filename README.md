@@ -39,8 +39,7 @@ Pods are the simplest deployable unit in k8s world. And they can encapsulate one
 
 ## What's a cluster?
 
-Pods and their containers still need a host machine, a node that will provide resources (storage, RAM and CPU).  
-The combination of multiple nodes is called a **cluster**.  
+A k8s cluster is an aggregate of multiple nodes that are networked together in order to form a cohesive distributed system.  
 
 ## Control Plane & worker nodes
 
@@ -232,5 +231,24 @@ kubectl apply -f tiny-rq.yml -n demo
 kubectl describe ns demo
 ```
 
+# Upgrading a k8s cluster is not an easy task
 
-39/170
+Migrating a k8s cluster to a newer version can introduce compatibility issues and make our previously working manifest files suddenly obsolete.  
+
+It is recommended to:
+- review release notes for breaking changes and deprecated APIs before starting
+- test the upgrade in a staging environment mirroring production
+
+https://www.linkedin.com/pulse/challenges-upgrading-kubernetes-clusters-suheb-ghare-d5zqf/
+
+# Resource consumption monitoring
+
+1. install the required components from this k8s GitHub repo: https://github.com/kubernetes-sigs/metrics-server
+```bash
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+1. the above command creates a bunch of pods that will be harvesting and gathering information about all pods in all nodes inside of our cluster
+2. we can check that the metrics server is up via `kubectl get apiservice | grep metrics` (status should be "True")
+3. once this API service is running, we can run `kubectl top nodes` to monitor 
+
+44/170
