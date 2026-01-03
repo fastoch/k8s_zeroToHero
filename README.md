@@ -190,6 +190,11 @@ spec:
 ```
 Note that the "Pod" value needs to be written with an uppercase P.  
 
+# Most common `kubectl` commands
 
+- `kubectl get pods` returns the list of all pods available in the current namespace
+- `kubectl apply -f my-manifest.yml` creates a k8s resource based on the specified manifest file
+- `kubectl describe <resource_type> <resource_name>` brings up detailed information about a resource, very useful for troubleshooting
+- `kubectl delete <resource_type> <resource_name>`
 
-28/170
+33/170
