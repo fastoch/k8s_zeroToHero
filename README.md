@@ -112,7 +112,7 @@ And the commands required for creating containers (`docker run`, `podman run`, e
 To build containers that will live in a k8s Pod, we still need an image, a template with instructions about how the container should be built
 and how the application inside of it should be set up.  
 
-# Creating a Pod
+# Creating a Pod - workflow
 
 1. We use `kubectl` commands to create a Pod
 2. This is received by the API server inside the control plane (or controller node)
@@ -206,13 +206,31 @@ Note that the "Pod" value needs to be written with an uppercase P.
 
 # Creating a Resource quota
 
-A ResourceQuota in k8s defines a hard cap on cumulative resource usage and object counts within a single namespace.  
-In the `spec` section of a manifest, this would look something like that:
+A ResourceQuota in k8s defines a hard cap on cumulative resource usage and object counts within a single **namespace**.  
+
+A YAML manifest for a basic resource quota would look something like that:
 ```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: tiny-rq
 spec:
   hard:
     cpu: "1"
     memory: 1Gi
 ```
 
-38/170
+We can then apply this resource quota to a specific namespace:
+```bash
+kubectl apply -f tiny-rq.yml -n <targeted_namespace>
+```
+
+We can create a demo namespace and apply our resource quota to it, then check if that's been applied: 
+```bash
+kubectl create ns demo
+kubectl apply -f tiny-rq.yml -n demo
+kubectl describe ns demo
+```
+
+
+39/170
