@@ -174,27 +174,34 @@ icecream:
 
 There are tons of templates available online, and you'll easily find the one that matches your need.  
 
-All manifests contain the following keys:
+Most manifests contain the following keys:
 ```yaml
-apiVersion: v1
-kind: Pod
+apiVersion: 
+kind: 
 metadata:
-  name: nginx
+  name: 
+  namespace: 
   labels:
   annotations:
 spec:
   containers:
-  - name:
+  - name: container1
     image:
     ports:
+  - name: container2
+    image:
+    port:
 ```
 Note that the "Pod" value needs to be written with an uppercase P.  
 
 # Most common `kubectl` commands
 
-- `kubectl get pods` returns the list of all pods available in the current namespace
+- `kubectl get pods` returns the list of all pods in the current namespace
+- `kubectl get namespaces` returns all namespaces in the current cluster
+- `kubectl get pods -n <targeted_namespace>` returns all pods in a specific namespace
+- `kubectl create ns <new_namespace>`
 - `kubectl apply -f my-manifest.yml` creates a k8s resource based on the specified manifest file
-- `kubectl describe <resource_type> <resource_name>` brings up detailed information about a resource, very useful for troubleshooting
-- `kubectl delete <resource_type> <resource_name>`
+- `kubectl describe <resource_type> <resource_name>` brings up detailed information about a resource, useful for troubleshooting
+- `kubectl delete <resource_type> <resource_name>` or `kubectl delete -f my-manifest.yml`
 
-33/170
+37/170
