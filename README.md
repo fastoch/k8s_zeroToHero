@@ -287,8 +287,19 @@ And 250m for the cpu means "250 millicore".
 
 >[!important]
 If there's a resource quota in place for the namespace in which the above Pod will live, we'll be able to create more Pods 
-but only up until we reach the resource quota.  
+like this one, but only up until we reach the resource quota.  
+
+## Recap about managing resource consumption
+
+We set requests and limits at the container level when writing the manifest that will be used for Pod creation.  
+Then we also write a manifest to define a resource quota at the namespace level, and all Pods that will live within 
+that namespace can only consume as much as allowed by our resource quota.  
+
+In other words, even when you've restricted your containers via requests/limits, at some point you're going to 
+hit the maximum resources your namespace is allowed to use.  
+
+# Distinction between readiness and liveness
 
 
 
-48/170
+51/170
