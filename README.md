@@ -347,8 +347,15 @@ As we said, the probe is added at the container level.
   - `port` is the specific port inside the container to which the requests must be sent.  
 - `initialDelaySeconds`: how soon after creation the container will start being probed
 - `periodSeconds`: at which frequency the container will be probed, every 5 seconds in our example
-- `timoutSeconds`: how long are we giving the container to respond
+- `timeoutSeconds`: how long are we giving the container to respond
 - `failureThreshold`: how many consecutive failures before killing the container
 
+Writing a readinessProbe in a YAML manifest would be no different from this livenessProbe example.  
+Except that a non-responding container would make the probe turn off traffic to the corresponding Pod until the container responds.  
 
-57/170 (33%)
+Read the official documentation for more details about probes:  
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/  
+
+
+
+58/170 (33%)
