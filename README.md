@@ -241,7 +241,7 @@ It is recommended to:
 
 https://www.linkedin.com/pulse/challenges-upgrading-kubernetes-clusters-suheb-ghare-d5zqf/
 
-# Resource usage monitoring inside our cluster
+# Monitoring Resource Consumption  
 
 1. install the Kubernetes Metrics Server:
 ```bash
@@ -253,6 +253,36 @@ kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op":
 ```
 1. Wait 1-2 minutes, then check that the metrics server is up via `kubectl get apiservices | grep metrics` (status should be "True")
 2. once this API service is running, we can run `kubectl top nodes` to monitor all nodes in our cluster
+3. and to monitor all pods in all namespaces: `kubectl top pods -A`
+
+# Balancing Resource Consumption
+
+We'll do that by modifying our manifests, so that we don't starve our containers, but we don't let them consume more than they need.  
+
+We have 2 parameters to set the right balance:
+- requests: guarantees that your Pod's container is allocated a minimum amount of resources
+- limits: sets the maximum amount of resources your Pod's container is allowed to consume
+
+Example manifest for a Pod:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: demo-pod
+spec: 
+  containers: 
+  - name: nginx
+    image: nginx:1.14.2
+    resources: 
+      requests: 
+        cpu: 
+        memory: 
+      limits: 
+        cpu: 
+        memory: 
+```
+
+Notice that requests and limits are set on a container by container basis, not at the Pod level.  
 
 
-44/170
+47/170
