@@ -241,14 +241,18 @@ It is recommended to:
 
 https://www.linkedin.com/pulse/challenges-upgrading-kubernetes-clusters-suheb-ghare-d5zqf/
 
-# Resource consumption monitoring
+# Resource usage monitoring inside our cluster
 
-1. install the required components from this k8s GitHub repo: https://github.com/kubernetes-sigs/metrics-server
+1. install the Kubernetes Metrics Server:
 ```bash
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
-1. the above command creates a bunch of pods that will be harvesting and gathering information about all pods in all nodes inside of our cluster
-2. we can check that the metrics server is up via `kubectl get apiservice | grep metrics` (status should be "True")
-3. once this API service is running, we can run `kubectl top nodes` to monitor 
+2. Insecure TLS is often needed for local setups like minikube, kind, or k3s due to self-signed kubelet certificates:
+```bash
+kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
+```
+1. Wait 1-2 minutes, then check that the metrics server is up via `kubectl get apiservices | grep metrics` (status should be "True")
+2. once this API service is running, we can run `kubectl top nodes` to monitor all nodes in our cluster
+
 
 44/170
