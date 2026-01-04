@@ -341,11 +341,14 @@ spec:
 ```
 As we said, the probe is added at the container level.  
 
-The `httpGet` section is where we determine the method the probe will be using to tap the container.  
-Since the simple service application we're using here is an API, it can receive HTTP requests.  
-`path` is the endpoint to which the probe will send GET requests.  
-`port` is the specific port inside the container to which the requests must be sent.  
+- The `httpGet` section is where we determine the method the probe will be using to tap the container.  
+  - Since the simple service application we're using here is an API, it can receive HTTP requests.  
+  - `path` is the endpoint to which the probe will send GET requests.  
+  - `port` is the specific port inside the container to which the requests must be sent.  
+- `initialDelaySeconds`: how soon after creation the container will start being probed
+- `periodSeconds`: at which frequency the container will be probed, every 5 seconds in our example
+- `timoutSeconds`: how long are we giving the container to respond
+- `failureThreshold`: how many consecutive failures before killing the container
 
 
-
-55/170
+57/170 (33%)
