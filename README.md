@@ -356,6 +356,15 @@ Except that a non-responding container would make the probe turn off traffic to 
 Read the official documentation for more details about probes:  
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/  
 
+# Port Forwarding
 
+```bash
+kubectl run demopod --image=nginx
+kubectl port-forward demopod 
+```
 
-58/170 (33%)
+Let's explain the above commands:
+- `kubectl run` is a quick and dirty way to create pods without using a manifest
+- 
+
+59/170 (34%)
