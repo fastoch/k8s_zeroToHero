@@ -298,8 +298,54 @@ that namespace can only consume as much as allowed by our resource quota.
 In other words, even when you've restricted your containers via requests/limits, at some point you're going to 
 hit the maximum resources your namespace is allowed to use.  
 
-# Distinction between readiness and liveness
+# Probes
+
+Probes are basically watch dogs that you can put on top of individual containers.  
+There are 2 types of probes: **readiness** probes and **liveness** probes.  
+
+## Liveness probe
+
+The probe will keep poking the container to make sure it's still alive.  
+If the container doesn't respond, the probe will count one strike.  
+After a predetermined number of consecutive strikes, the probe will kill the non-responding container.  
+
+## Readiness probe
+
+This type of probe does the same but doesn't kill a non-responding container.  
+Instead, it will prevent it from being added to the LoadBalancer, so that no traffic is routed to it.  
+
+## Probe manifest example
+
+Probes are extremely **granular**, meaning we have a lot of control over how we want them to act.   
+
+Here's a simple example with a liveness probe: 
+```yaml
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: sise-lp
+spec:
+  containers:
+  - name: sise
+    image: mhausenblas/simpleservice:0.6.0
+    ports:
+    - containerPort: 9876
+    livenessProbe: 
+      initialDelaySeconds: 2
+      periodSeconds: 5
+      timeoutSeconds: 1
+      failureThreshold: 3
+      httpGet:
+        path: /health
+        port: 9876
+```
+As we said, the probe is added at the container level.  
+
+The `httpGet` section is where we determine the method the probe will be using to tap the container.  
+Since the simple service application we're using here is an API, it can receive HTTP requests.  
+`path` is the endpoint to which the probe will send GET requests.  
+`port` is the specific port inside the container to which the requests must be sent.  
 
 
 
-51/170
+55/170
