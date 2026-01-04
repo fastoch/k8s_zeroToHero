@@ -275,14 +275,20 @@ spec:
     image: nginx:1.14.2
     resources: 
       requests: 
-        cpu: 
-        memory: 
+        cpu: 250m
+        memory: 65M
       limits: 
-        cpu: 
-        memory: 
+        cpu: 500m
+        memory: 130M
 ```
 
 Notice that requests and limits are set on a container by container basis, not at the Pod level.  
+And 250m for the cpu means "250 millicore".  
+
+>[!important]
+If there's a resource quota in place for the namespace in which the above Pod will live, we'll be able to create more Pods 
+but only up until we reach the resource quota.  
 
 
-47/170
+
+48/170
