@@ -373,7 +373,7 @@ In your new terminal window (our new pane), run `curl localhost:2224` to get the
 
 Press ctrl+D to close the new terminal window, and ctrl+C to stop port forwarding in the first one.  
 
-# Opening an interactive terminal inside a Pod
+# Opening an interactive terminal inside a Pod's container
 
 To open an interactive terminal in our demopod (with the sh shell):  
 `kubectl exec -it demopod -- sh`  
@@ -381,7 +381,18 @@ To open an interactive terminal in our demopod (with the sh shell):
 And to check the container's underlying OS:  
 `cat /etc/os-release`  
 
+# Writing files inside a Pod's container
+
+While having an interactive terminal running inside our container, we cannot use text editors such as vim or vi.  
+Instead we can use tricks like `echo "some random text" > /var/www/index.html` to write files inside the container file system.  
+
+# Copying local files into a Pod's container
+
+`kubectl cp <path_to_local_file> demopod:<destination_path_inside_the_container>`  
+
+For example: `kubectl cp ~/Documents/nginx.conf demopod:etc/nginx/nginx.conf`  
 
 
 
-62/170 (34%)
+
+64/170 (34%)
