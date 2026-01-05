@@ -360,11 +360,28 @@ https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-read
 
 ```bash
 kubectl run demopod --image=nginx
-kubectl port-forward demopod 
+kubectl port-forward demopod 2224:80
 ```
 
 Let's explain the above commands:
 - `kubectl run` is a quick and dirty way to create pods without using a manifest
-- 
+- `kubectl port-forward` maps a port available on the host system to the container's port on which the app is listening
+  - in our example, we map localhost:2224 to the container's port 80, which is the default port for Nginx
 
-59/170 (34%)
+This last command is going to hog up your command line, so you need to either split your terminal window or open a new one.  
+In your new terminal window (our new pane), run `curl localhost:2224` to get the Nginx welcome page.  
+
+Press ctrl+D to close the new terminal window, and ctrl+C to stop port forwarding in the first one.  
+
+# Opening an interactive terminal inside a Pod
+
+To open an interactive terminal in our demopod (with the sh shell):  
+`kubectl exec -it demopod -- sh`  
+
+And to check the container's underlying OS:  
+`cat /etc/os-release`  
+
+
+
+
+62/170 (34%)
