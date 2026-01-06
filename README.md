@@ -169,7 +169,7 @@ icecream:
 >[!important]
 >Indentation is very important in YAML files.
 
-## Creating your own YAML manifest
+# Creating your own YAML manifest
 
 There are tons of templates available online, and you'll easily find the one that matches your need.  
 
@@ -392,7 +392,10 @@ Instead we can use tricks like `echo "some random text" > /var/www/index.html` t
 
 For example: `kubectl cp ~/Documents/nginx.conf demopod:etc/nginx/nginx.conf`  
 
+# Data Persistence
+
+Pods and containers are stateless and ephemeral, when they die, all data inside of them is lost.  
 
 
 
-64/170 (34%)
+66/170 (39%)
