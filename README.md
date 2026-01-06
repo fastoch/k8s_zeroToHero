@@ -420,7 +420,22 @@ This is very convenient because this way, config changes only need to be made in
 
 ## Attaching a ConfigMap to a Pod
 
+1. add the configmap as a volume to the pod
+2. 
 
+Let's apply this to our previous Nginx pod manifest:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: demo-pod
+spec: 
+  containers: 
+  - name: nginx
+    image: nginx:1.14.2
+  volumes:
+    
+```
 
 
 70/170 (40%)
