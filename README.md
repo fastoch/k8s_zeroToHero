@@ -392,12 +392,12 @@ Instead we can use tricks like `echo "some random text" > /var/www/index.html` t
 
 For example: `kubectl cp ~/Documents/nginx.conf demopod:etc/nginx/nginx.conf`  
 
-# Data Persistence - ConfigMap
+# Data Persistence with ConfigMaps
 
 Pods and containers are stateless and ephemeral, when they die, all data inside of them is lost.  
 In k8s, there's a resource called a **ConfigMap** that allows us to store data such as config files, environment variables, etc.   
 
-Making ConfigMaps is very easy, attaching them to containers is a bit more complicated.  
+Making ConfigMaps is very easy, attaching them to Pods/containers is a bit more complicated.  
 
 ## ConfigMaps & Volumes
 
@@ -411,7 +411,16 @@ This is very convenient because this way, config changes only need to be made in
 
 ## ConfigMap manifest example
 
+1. Let's create a heroes.txt file: `vim heroes.txt`
+2. Let's create a ConfigMap (cm): `kubectl create cm heroes-data --from-file=heroes.txt`
+3. we can see this new ConfigMap via `kubectl get configmaps` and `kubectl describe cm heroes-data`
+  
+>[!important]
+>Note that ConfigMaps only contain text files. For databases, we'll use persistent storage.  
+
+## Attaching a ConfigMap to a Pod
 
 
 
-68/170 (40%)
+
+70/170 (40%)
