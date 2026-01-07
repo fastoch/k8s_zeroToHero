@@ -395,33 +395,30 @@ For example: `kubectl cp ~/Documents/nginx.conf demopod:etc/nginx/nginx.conf`
 # Data Persistence with ConfigMaps
 
 Pods and containers are stateless and ephemeral, when they die, all data inside of them is lost.  
-In k8s, there's a resource called a **ConfigMap** that allows us to store data such as config files, environment variables, etc.   
+In k8s, there's a resource called a **configMap** that allows us to store data such as config files, environment variables, etc.   
 
-Making ConfigMaps is very easy, attaching them to Pods/containers is a bit more complicated.  
+Making configMaps is very easy, attaching them to Pods/containers is a bit more complicated.  
 
-## ConfigMaps & Volumes
+## configMap & volumes
 
-The ConfigMap object will be mounted as a volume to the Pod itself.  
+The configMap object will be mounted as a volume to the Pod itself.  
 We then mount the volume to the container inside that Pod, using a specific mount point.  
 
 This specific mount point will be some arbitrary directory inside the container.  
 
-The same ConfigMap can be mounted to as many Pods as we want.  
+The same configMap can be mounted to as many Pods as we want.  
 This is very convenient because this way, config changes only need to be made in one place.  
 
 ## ConfigMap manifest example
 
 1. Let's create a heroes.txt file: `vim heroes.txt`
-2. Let's create a ConfigMap (cm): `kubectl create cm heroes-data --from-file=heroes.txt`
-3. we can see this new ConfigMap via `kubectl get configmaps` and `kubectl describe cm heroes-data`
-  
->[!important]
->Note that ConfigMaps only contain text files. For databases, we'll use persistent storage.  
+2. Let's create a configMap (cm): `kubectl create cm heroes-data --from-file=heroes.txt`
+3. we can see this new ConfigMap via `kubectl get cm` and `kubectl describe cm heroes-data`
 
-## Attaching a ConfigMap to a Pod
+## Attaching a configMap to a Pod
 
 1. add the configmap as a volume to the pod
-2. 
+2. add that volume to the container itself
 
 Let's apply this to our previous Nginx pod manifest:
 ```yaml
@@ -433,9 +430,17 @@ spec:
   containers: 
   - name: nginx
     image: nginx:1.14.2
+    # step 2: add the volume to the container
+    volumeMounts:
+    - name: dc-heroes
+      mountPath: /heroes
+
+  # step 1: add the configmap as a volume to this pod
   volumes:
-    
+  - name: dc-heroes
+    configMap: 
+      name: heroes-data
 ```
 
 
-70/170 (40%)
+73/170 (43%)
