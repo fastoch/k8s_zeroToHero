@@ -472,6 +472,16 @@ from the configMap/volume = heroes.txt
 # Secrets
 
 Secrets and configMaps are very similar.  
+Both ConfigMaps and Secrets are Kubernetes API objects used to store configuration data as key–value pairs for Pods.  
+
+And both can be exposed to Pods as:
+- Mounted volumes (files inside the container filesystem)
+- Environment variables
+
+The difference resides in that:
+- ConfigMaps are for non-confidential configuration data 
+- Secrets are for sensitive data such as passwords, tokens, certificates...
+
 
 
 78/170 (46%)
