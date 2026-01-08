@@ -472,7 +472,7 @@ from the configMap/volume = heroes.txt
 # Secrets
 
 Secrets and configMaps are very similar.  
-Both ConfigMaps and Secrets are Kubernetes API objects used to store configuration data as key–value pairs for Pods.  
+Both ConfigMaps and Secrets are Kubernetes API objects used to store configuration data for Pods.  
 
 And both can be exposed to Pods as:
 - Mounted volumes (files inside the container filesystem)
@@ -480,8 +480,32 @@ And both can be exposed to Pods as:
 
 The difference resides in that:
 - ConfigMaps are for non-confidential configuration data 
-- Secrets are for sensitive data such as passwords, tokens, certificates...
+- Secrets are for sensitive data such as passwords, OAuth tokens, and SSH keys.
+
+Secrets are, by default, stored **unencrypted** in the API server's underlying data store (etcd).  
+Principles and practices for good Secret management for cluster administrators and application developers:  
+https://kubernetes.io/docs/concepts/security/secrets-good-practices/  
+
+There are many types of Secrets. K8s provides several built-in types for some commone usage scenarios.  
+
+Here's an example manifest of how to create a secret:
+```yaml
+apiVersion: v1
+kind: Secret
+metadata: 
+  name: mysql-secret
+type: kubernetes.io/basic-auth
+stringData:
+  password: alta3
+```
+
+Then, we create the secret via `kubectl apply -f secret.yml`  
+And we can see our secrets via `kubectl get secrets`  
+
+And if we run `kubectl describe secrets mysql-secret`, it won't show the value of our password.  
+
+## How to read in the contents of our secret?
 
 
 
-78/170 (46%)
+82/170 (48%)
