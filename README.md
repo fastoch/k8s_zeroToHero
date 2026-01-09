@@ -1,7 +1,7 @@
 # Source material
 
-- k8s zero to hero (2025): https://youtu.be/MTHGoGUFpvE?si=1H6K97HEiUpilqvt
-- k8s secrets (2025): https://www.youtube.com/watch?v=mSJXn6XdEr0&t=14s
+- k8s zero to hero (2025 - 2h50): https://youtu.be/MTHGoGUFpvE?si=1H6K97HEiUpilqvt
+- k8s secrets (2025 - 18min): https://www.youtube.com/watch?v=mSJXn6XdEr0&t=14s
 
 # Application Developer Context
 
@@ -470,17 +470,47 @@ volumeMounts:
 Instead of mounting the entire configMap/volume as a directory, `subPath` tells Kubernetes to mount only a single file 
 from the configMap/volume = heroes.txt
 
-# Secrets 
+---
+
+# Secrets explained by Mischa van den Burg
 
 source: https://www.youtube.com/watch?v=mSJXn6XdEr0&t=14s  
 
-0/18
+4/18
 
 ## What is a k8s secret?
 
+It's a k8s object which kind is `Secret` that is designed to hold sensitive data.  
+This data is stored as key-value pairs, where the values are base64-encoded (encoded, not encrypted).  
 
+We can generate base64 codes from the CLI: `echo mypassword | base64`  
+We can decode the generated string via `echo bXlwYXNzd29yZAo= | base64 -d`  
 
-## Secrets explained by Alta3 Research
+Real security relies on **etcd encryption at rest** (done in our cluster config) and **RBAC** (Role-Based Access Control).  
+
+## Creating k8s Secrets 
+
+- This can be done imperatively via `kubectl` commands (suitable for demos/testing): 
+  - `kubectl create secret <secret_type> <secret_name> --from-literal=username=admin --from-literal=password='V3ryS3cr3t'`
+  - `kubectl create secret <secret_type> <secret_name> --from-file=./config.json --from-file=./ssh-key`
+- Or this can be done declaratively using YAML files (best practice):
+```yaml
+
+```
+By default, the `echo` command appends a newline after printing its arguments.  
+The `-n` option prevents from adding a trailing newline character to the output.  
+
+We can see all our secrets via `kubectl get secrets`  
+And we can see a specific secret via `kubectl get secret my-secret -o yaml`  
+
+>[!note]
+>With k8s, you're usually not running `kubectl` commands directly, you'll be deploying things from code (GitOps approach).  
+
+---
+
+# Secrets explained by Alta3 Research
+
+## Secrets vs configMaps
 
 Secrets and configMaps are very similar.  
 Both ConfigMaps and Secrets are Kubernetes API objects used to store configuration data for Pods.  
@@ -493,27 +523,24 @@ The difference resides in that:
 - ConfigMaps are for non-confidential configuration data 
 - Secrets are for sensitive data such as passwords, OAuth tokens, and SSH keys.
 
+There are many types of Secrets. K8s provides several built-in types for some commone usage scenarios.  
+
+## Secrets are not encrypted
+
 Secrets are, by default, stored **unencrypted** in the API server's underlying data store (etcd).  
 Principles and practices for good Secret management for cluster administrators and application developers:  
 https://kubernetes.io/docs/concepts/security/secrets-good-practices/  
 
-There are many types of Secrets. K8s provides several built-in types for some commone usage scenarios.  
+## Creating a Secret via a manifest 
 
 Here's an example manifest of how to create a secret:
 ```yaml
-apiVersion: v1
-kind: Secret
-metadata: 
-  name: mysql-secret
-type: kubernetes.io/basic-auth
-stringData:
-  password: alta3
+
 ```
 
-Then, we create the secret via `kubectl apply -f secret.yml`  
-And we can see our secrets via `kubectl get secrets`  
+We can then create the secret via `kubectl apply -f my-secret.yml`  
 
-And if we run `kubectl describe secrets mysql-secret`, it won't show the value of our password.  
+If you run `kubectl describe secrets my-secret`, notice that it won't show the value of our password.  
 
 ## How to read in the contents of our secret?
 
