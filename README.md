@@ -1,6 +1,7 @@
 # Source material
 
-https://youtu.be/MTHGoGUFpvE?si=1H6K97HEiUpilqvt
+- k8s zero to hero (2025): https://youtu.be/MTHGoGUFpvE?si=1H6K97HEiUpilqvt
+- k8s secrets (2025): https://www.youtube.com/watch?v=mSJXn6XdEr0&t=14s
 
 # Application Developer Context
 
@@ -469,7 +470,17 @@ volumeMounts:
 Instead of mounting the entire configMap/volume as a directory, `subPath` tells Kubernetes to mount only a single file 
 from the configMap/volume = heroes.txt
 
-# Secrets
+# Secrets 
+
+source: https://www.youtube.com/watch?v=mSJXn6XdEr0&t=14s  
+
+0/18
+
+## What is a k8s secret?
+
+
+
+## Secrets explained by Alta3 Research
 
 Secrets and configMaps are very similar.  
 Both ConfigMaps and Secrets are Kubernetes API objects used to store configuration data for Pods.  
@@ -505,6 +516,7 @@ And we can see our secrets via `kubectl get secrets`
 And if we run `kubectl describe secrets mysql-secret`, it won't show the value of our password.  
 
 ## How to read in the contents of our secret?
+
 
 
 
