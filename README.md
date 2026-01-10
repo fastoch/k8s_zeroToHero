@@ -476,8 +476,6 @@ from the configMap/volume = heroes.txt
 
 source: https://www.youtube.com/watch?v=mSJXn6XdEr0&t=14s  
 
-4/18
-
 ## What is a k8s secret?
 
 It's a k8s object which kind is `Secret` that is designed to hold sensitive data.  
@@ -511,11 +509,33 @@ By default, the `echo` command appends a newline `\n` after printing its argumen
 The `-n` option prevents from adding a trailing newline character to the output.  
 `-n` ensures only the password string is piped to base64  
 
+- To apply the above secret to our cluster: `kubectl apply -f secret.yaml`
 - To see all our secrets: `kubectl get secrets`  
 - To see a specific secret: `kubectl get secret my-secret -o yaml`  
 
 >[!NOTE]
 >With k8s, you're usually not running `kubectl` commands directly, you'll be deploying things from code (GitOps approach).  
+
+## Consuming K8s Secrets as Environment Variables
+
+Here's a Pod manifest in which the container consumes the secret we previously created:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: consume-secret-env-var
+spec: 
+  containers:
+    - name: myapp-container
+      image: busybox # using busybox to easily check env vars
+```
+
+>[!NOTE]
+The Busybox Docker image simplifies checking environment variables by bundling a lightweight env command (along with hundreds of other Unix utilities) 
+into a single tiny executable.  
+
+
+6/18
 
 ---
 
@@ -549,7 +569,7 @@ Here's an example manifest of how to create a secret:
 
 ```
 
-We can then create the secret via `kubectl apply -f my-secret.yml`  
+We can then create the secret via `kubectl apply -f my-secret.yaml`  
 
 If you run `kubectl describe secrets my-secret`, notice that it won't show the value of our password.  
 
