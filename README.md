@@ -495,13 +495,24 @@ Real security relies on **etcd encryption at rest** (done in our cluster config)
   - `kubectl create secret <secret_type> <secret_name> --from-file=./config.json --from-file=./ssh-key`
 - Or this can be done declaratively using YAML files (best practice):
 ```yaml
-
+apiVersion: v1
+kind: Secret
+metadata: 
+  name: my-db-secret
+type: Opaque
+data: 
+  # values must be base64-encoded 
+  DB_USER: YWRtaW4= # echo -n admin | base64
+  DB_PWD: MWYyZDhjNDI= # echo -n 1f2d8c42 | base64
 ```
-By default, the `echo` command appends a newline after printing its arguments.  
-The `-n` option prevents from adding a trailing newline character to the output.  
 
-We can see all our secrets via `kubectl get secrets`  
-And we can see a specific secret via `kubectl get secret my-secret -o yaml`  
+>[!note]
+By default, the `echo` command appends a newline `\n` after printing its arguments.  
+The `-n` option prevents from adding a trailing newline character to the output.  
+`-n` ensures only the password string is piped to base64  
+
+- To see all our secrets: `kubectl get secrets`  
+- To see a specific secret: `kubectl get secret my-secret -o yaml`  
 
 >[!note]
 >With k8s, you're usually not running `kubectl` commands directly, you'll be deploying things from code (GitOps approach).  
