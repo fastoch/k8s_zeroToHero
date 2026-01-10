@@ -506,7 +506,7 @@ data:
   DB_PWD: MWYyZDhjNDI= # echo -n 1f2d8c42 | base64
 ```
 
->[!note]
+>[!TIP]
 By default, the `echo` command appends a newline `\n` after printing its arguments.  
 The `-n` option prevents from adding a trailing newline character to the output.  
 `-n` ensures only the password string is piped to base64  
@@ -514,7 +514,7 @@ The `-n` option prevents from adding a trailing newline character to the output.
 - To see all our secrets: `kubectl get secrets`  
 - To see a specific secret: `kubectl get secret my-secret -o yaml`  
 
->[!note]
+>[!NOTE]
 >With k8s, you're usually not running `kubectl` commands directly, you'll be deploying things from code (GitOps approach).  
 
 ---
