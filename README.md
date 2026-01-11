@@ -472,7 +472,7 @@ from the configMap/volume = heroes.txt
 
 ---
 
-# Secrets explained by Mischa van den Burg
+# Secrets explained by Mischa van den Burg (nested course)
 
 source: https://www.youtube.com/watch?v=mSJXn6XdEr0&t=14s  
 
@@ -551,12 +551,12 @@ As you can see, we have 2 options:
 
 Given you've already applied the secret to your k8s cluster, you can now create a file for the above manifest:
 ```bash
-vi pod-secret.yaml
+vi pod-secret-env-var.yaml
 ```
 
 And deploy this pod:
 ```bash
-kubectl apply -f pod-secret.yaml
+kubectl apply -f pod-secret-env-var.yaml
 ```
 
 And now, if you check the logs of this pod, you'll get "My username is admin":
@@ -574,10 +574,81 @@ And once inside that container, you can run `env` to see the APP_DB_USER environ
 ## Consuming Secrets via Volume Mounts
 
 The second way to consume Secrets inside containers is by using Volume mounts.  
+This will read every key inside the data section of our Secret file and create one file per key.  
+Each file will be named after a key and will contain the value for that key.  
+
+Example:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: consume-secret-volume-mount
+spec: 
+  containers:
+    - name: myapp-container
+      image: busybox # using busybox to easily check env vars
+      command: 
+        - "sh"
+        - "-c" 
+        - "echo 'Checking secrets:' && ls /etc/secrets/ && sleep 3600"
+      volumeMounts:
+        - name: secret-storage # refers to volume defined below
+          mountPath: "/etc/secrets" # folder in which the volume will be mounted inside the container
+          readOnly: true # Good practice
+  volumes:
+    - name: secret-storage 
+      secret: 
+        secretName: my-db-secret # name of the secret object
+```  
+
+We can create a file and paste the above YAML code inside it: `vi pod-secret-volume-mount`  
+Then we can create that pod: `kubectl apply -f pod-secret-volume-mount`  
+
+And if we check the logs of that pod: `kubectl logs consume-secret-volume-mount`  
+We'll get the following output, which shows 2 files that each contain one of the values of our Secret file:  
+```bash
+Checking secrets:
+DB_PWD
+DB_USER
+```
+
+We can now enter the container and show the contents of the DB_PWD and DB_USER files:
+```bash
+kubectl exec -it consume-secret-volume-mount -- sh
+cd /etc/secrets/
+cat DB_PWD
+cat DB_USER
+```
+
+## Secrets Security - Environment Variables vs Volume Mounts
+
+**Volume mounts** provide the best way to consume Kubernetes secrets over environment variables.  
+They offer superior security by avoiding exposure in process lists, logs, or subprocesses.  
+Environment variables carry higher risks of leakage.  
+
+**Prefer volume mounts** with `readOnly: true` and `defaultMode: 0400` for production workloads.  
+
+For full security, combine with:
+- **etcd encryption at rest**, 
+- **RBAC least-privilege**, 
+- and **external stores** like **Vault**   
+
+## RBAC: Role-Based Access Control
+
+**RBAC least-privilege** in Kubernetes means granting users, service accounts, or workloads only the minimal permissions needed for their specific tasks.  
+
+Apply **least-privilege** by starting with no permissions and adding only what's required, such as read-only access to specific resources like pods or secrets in one namespace.  
+
+Use granular rules with exact verbs (get, list, watch) and resources, avoiding broad cluster-admin roles.  
+
+Regularly audit with `kubectl auth can-i` to verify and revoke excessive rights.
+
+## Etcd encryption at rest
+
+By default, 
 
 
-
-10/18
+13/18 END OF NESTED COURSE (K8s Secrets explained by Mischa van den Burg)
 
 ---
 
