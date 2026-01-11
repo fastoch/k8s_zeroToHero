@@ -645,10 +645,45 @@ Regularly audit with `kubectl auth can-i` to verify and revoke excessive rights.
 
 ## Etcd encryption at rest
 
-By default, 
+The **etcd** database is Kubernetes' key-value store for cluster state.  
+**etcd encryption at rest** protects data stored in the etcd database by encrypting sensitive resources like **Secrets**.  
+
+The `kube-apiserver` handles encryption transparently: 
+- it encrypts data on write to etcd 
+- and decrypts on read via the Kubernetes API.   
+
+Multiple providers support this, ordered by priority in an **EncryptionConfiguration YAML file** passed to the `apiserver` 
+via the `--encryption-provider-config` flag.  
+
+Common providers include:
+- **aescbc** (local AES-CBC keys), 
+- **kms** (external Key Management Service like AWS KMS or GCP Cloud KMS), 
+- and **secretbox**
+
+## Secret Limitations
+
+- Manual rotation needed: update the secret and restart deployments that depend on it
+- The Base64-encoded value is visible in YAML and API responses (hence the need for strict RBAC) 
+
+## Handling Secrets in a Production Environment - The GitOps Pattern using SOPS and Flux 
+
+A solution to these limitations resides in using an external secrets operator.  
+
+The GitOps pattern enables secure management of Kubernetes secrets by storing **encrypted** files in **Git** repositories.  
+**Flux** automatically **decrypts** secrets and applies them to clusters.  
+
+**Flux** acts as the GitOps operator to sync declarative configurations from Git.  
+While **SOPS** (Secrets Operations) encrypts secrets using keys like GPG, age, or cloud KMS (Key Management Service) before committing them.  
+
+**Flux** includes controllers like: 
+- `source-controller` for Git syncing 
+- and `kustomize-controller` for decryption and application. 
+
+**SOPS** integrates natively via the `--decryption-provider=sops` flag in **Kustomizations**.  
+Supported backends include OpenPGP, age, AWS KMS, GCP KMS, Azure Key Vault, and HashiCorp Vault.
 
 
-13/18 END OF NESTED COURSE (K8s Secrets explained by Mischa van den Burg)
+END OF NESTED COURSE (K8s Secrets explained by Mischa van den Burg)
 
 ---
 
