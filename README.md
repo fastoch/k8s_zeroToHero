@@ -511,14 +511,14 @@ The `-n` option prevents from adding a trailing newline character to the output.
 
 - To apply the above secret to our cluster: `kubectl apply -f secret.yaml`
 - To see all our secrets: `kubectl get secrets`  
-- To see a specific secret: `kubectl get secret my-secret -o yaml`  
+- To see the details of a specific secret: `kubectl get secret my-db-secret -o yaml`  
 
 >[!NOTE]
 >With k8s, you're usually not running `kubectl` commands directly, you'll be deploying things from code (GitOps approach).  
 
 ## Consuming K8s Secrets as Environment Variables
 
-Here's a Pod manifest in which the container consumes the secret we previously created:
+Here's a Pod manifest in which the container consumes the secret we've just created:
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -528,14 +528,56 @@ spec:
   containers:
     - name: myapp-container
       image: busybox # using busybox to easily check env vars
+      command: ['sh', '-c', 'echo "My username is $APP_DB_USER" && sleep 3600'] # example command
+      env: 
+        - name: APP_DB_USER # env var name inside container
+          valueFrom:
+            secretKeyRef: 
+              name: my-db-secret # our Secret's name
+              key: DB_USER # key within the secret
+        # --- OR --- mount all keys from the secret:
+        # envFrom: 
+        #   - secretRef:
+        #     name: my-db-secret
 ```
 
 >[!NOTE]
 The Busybox Docker image simplifies checking environment variables by bundling a lightweight env command (along with hundreds of other Unix utilities) 
 into a single tiny executable.  
 
+As you can see, we have 2 options:
+- mount a specific key inside our secret as one env var: `valueFrom: secretKeyRef:`
+- mount all keys from the secret as environment variables: `envFrom: secretRef:`
 
-6/18
+Given you've already applied the secret to your k8s cluster, you can now create a file for the above manifest:
+```bash
+vi pod-secret.yaml
+```
+
+And deploy this pod:
+```bash
+kubectl apply -f pod-secret.yaml
+```
+
+And now, if you check the logs of this pod, you'll get "My username is admin":
+```bash
+kubectl logs consume-secret-env-var
+```
+Which means you've successfully injected your secret into the container and decoded it.  
+
+To double-check, you can open an interactive terminal inside the container:
+```bash
+kubectl exec -it consume-secret-env-var -- sh
+```
+And once inside that container, you can run `env` to see the APP_DB_USER environment variable and its value of 'admin'.  
+
+## Consuming Secrets via Volume Mounts
+
+The second way to consume Secrets inside containers is by using Volume mounts.  
+
+
+
+10/18
 
 ---
 
