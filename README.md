@@ -712,18 +712,27 @@ https://kubernetes.io/docs/concepts/security/secrets-good-practices/
 
 ## Creating a Secret via a manifest 
 
-Here's an example manifest of how to create a secret:
+Here's an example YAML file (manifest) that we can use to create a secret:
 ```yaml
-
+apiVersion: v1
+kind: Secret
+metadata: 
+  name: mysql-secret
+type: kubernetes.io/basic-auth
+stringData: 
+  password: alta3
 ```
 
-We can then create the secret via `kubectl apply -f my-secret.yaml`  
+We can then create the secret via `kubectl apply -f mysql-secret.yaml`  
 
-If you run `kubectl describe secrets my-secret`, notice that it won't show the value of our password.  
+If you run `kubectl describe secret my-secret`, notice that it won't show the value of our password.  
 
 ## How to read in the contents of our secret?
 
+Here's a Pod manifest where the container will access our secret:
+```yaml
 
+```
 
 
 82/170 (48%)
