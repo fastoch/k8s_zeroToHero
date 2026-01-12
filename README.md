@@ -683,7 +683,7 @@ While **SOPS** (Secrets Operations) encrypts secrets using keys like GPG, age, o
 Supported backends include OpenPGP, age, AWS KMS, GCP KMS, Azure Key Vault, and HashiCorp Vault.
 
 
-END OF NESTED COURSE (K8s Secrets explained by Mischa van den Burg)
+--- END OF NESTED COURSE (K8s Secrets explained by Mischa van den Burg) ---
 
 ---
 
@@ -707,8 +707,11 @@ There are many types of Secrets. K8s provides several built-in types for some co
 ## Secrets are not encrypted
 
 Secrets are, by default, stored **unencrypted** in the API server's underlying data store (etcd).  
+
 Principles and practices for good Secret management for cluster administrators and application developers:  
 https://kubernetes.io/docs/concepts/security/secrets-good-practices/  
+
+Best practices are described in the "Secrets Security" chapter at line 623. 
 
 ## Creating a Secret via a manifest 
 
@@ -731,8 +734,21 @@ If you run `kubectl describe secret my-secret`, notice that it won't show the va
 
 Here's a Pod manifest where the container will access our secret:
 ```yaml
-
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: mysql-locked
+spec: 
+  containers:
+  - image: mysql:8-debian
+    name: mysql
+    env: 
+      - name: MYSQL_ROOT_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: mysql-secret
+            key: password
 ```
 
 
-82/170 (48%)
+84/170 (49%)
