@@ -763,7 +763,10 @@ Every container inside a pod generates its own logs.
 And the logs that are generated are always what the stdout (standard output) and the stderr (standard error) 
 of a given container may be.  
 
+- to show the logs of a mono-container pod: `kubectl logs <pod_name>`
+- to show the logs of a specific container in a multi-container pod: `kubectl logs <pod_name> -c <container_name>`
+- to show the logs of all containers: `kubectl logs <pod_name> --all-containers`
 - 
 
 
-86/170 (50%)
+88/170 (51%)
