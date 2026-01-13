@@ -445,7 +445,7 @@ spec:
       name: heroes-data
 ```
 
-Then, we can create this pod via `kubectl apply -f podmanifest.yml`.  
+Then, we can create this pod via `kubectl apply -f pod_configMap.yml`.  
 And we can hop inside that pod via `kubectl exec -it demo-pod -- sh`  
 
 Once inside our pod, we can run `ls` to notice that the /heroes directory (our mountPath) has been created.  
@@ -732,7 +732,7 @@ If you run `kubectl describe secret my-secret`, notice that it won't show the va
 
 ## How to read in the contents of our secret?
 
-Here's a Pod manifest where the container will access our secret:
+Here's a Pod manifest where the container will access our secret as an environment variable:
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -750,5 +750,20 @@ spec:
             key: password
 ```
 
+Create this manifest via `vim pod_alta3_secret.yaml` and copy-paste the above contents into it.  
+Then, create the pod via `kubectl apply -f pod_alta3_secret.yaml`  
+Once created, we can enter the container: `kubectl exec -it mysql-locked -- bash`  
+and if we run `echo $MYSQL_ROOT_PASSWORD`, it will show `alta3`  
 
-84/170 (49%)
+# Troubleshooting
+
+## `kubectl logs`
+
+Every container inside a pod generates its own logs.  
+And the logs that are generated are always what the stdout (standard output) and the stderr (standard error) 
+of a given container may be.  
+
+- 
+
+
+86/170 (50%)
