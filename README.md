@@ -765,8 +765,11 @@ of a given container may be.
 
 - to show the logs of a mono-container pod: `kubectl logs <pod_name>`
 - to show the logs of a specific container in a multi-container pod: `kubectl logs <pod_name> -c <container_name>`
-- to show the logs of all containers: `kubectl logs <pod_name> --all-containers`
-- 
+- to show the logs of all containers inside a pod: `kubectl logs <pod_name> --all-containers`
+- to show a live stream of the logs: `kubectl logs <pod_name> -c <container_name> -f`
+- to show the logs generated during the last 10 seconds: `kubectl logs <pod_name> -c <container_name> --since 10s`
+
+When a pod gets deleted, all of its logs are removed as well.  
 
 
-88/170 (51%)
+89/170 (51%)
