@@ -773,6 +773,37 @@ When a pod gets deleted, all of its logs are removed as well.
 
 # K8s Labels
 
+Labels are tags for objects, used for grouping and operating on multiple objects simultaneously.  
+Labels are key-value pairs, as in this manifest:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: testpod
+  labels:
+    runtime: webby
+    ver: 2
+    ssd: true
+    env: dev
+spec: 
+  containers:
+```
+
+## Adding, updating or removing labels
+
+To see if our pods have labels:  
+`kubectl get pods --show-labels`  
+
+First method to add|update|remove labels is to edit the pod manifest itself.  
+Then we can run `kubectl apply -f podmanifest.yaml` to apply changes, and it works on running pods.  
+
+Second method is by using specific `kubectl` commands:
+- to add a label: `kubectl label pod demo-pod awesome=sauce` 
+- to update a label: `kubectl label pod demo-pod awesome=training --overwrite`
+- to remove a label: `kubectl label pod demo-pod awesome-`
+
+There's no limit to the number of labels that we can put on a given object.  
 
 
-92/170 (54%)
+
+97/170 (57%)
