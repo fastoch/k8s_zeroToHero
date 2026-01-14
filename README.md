@@ -771,5 +771,8 @@ of a given container may be.
 
 When a pod gets deleted, all of its logs are removed as well.  
 
+# K8s Labels
 
-89/170 (51%)
+
+
+92/170 (54%)
