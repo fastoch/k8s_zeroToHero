@@ -802,7 +802,10 @@ Second method is by using specific `kubectl` commands:
 - to update a label: `kubectl label pod demo-pod awesome=training --overwrite`
 - to remove a label: `kubectl label pod demo-pod awesome-`
 
-There's no limit to the number of labels that we can put on a given object.  
+There's no limit to the number of labels we can put on a given object.  
+
+When we'll talk about deployments and services, you'll understand that many types of K8s objects 
+depend on labels, and that's why it's important to be proficient at manipulating labels.  
 
 
 
