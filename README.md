@@ -816,7 +816,33 @@ In our example, if the specified label is applied to one of our pods, it will sh
 - To retrieve pods with a specific label: `kubectl get pods --selector=<label>`  
 - To retrieve pods with a specific value for a given label: `kubectl get pods --selector=<label>=<value>`  
 
+# Deployments
+
+**Definition**:  
+A deployment is a declarative higher-level object that describes the desired state for a set of pods (via a ReplicaSet).  
+
+Inside production environments, Pods are rarely created on their own.  
+Instead, they are made as part of deployments.  
+
+Deployments allow us to create multiple clones of the same pod, called **replicas**.  
+
+## Creating Deployments
+
+This is usually done via manifests.  
+But we can create a deployment manually: `kubectl create deployment demo-deploy --image=nginx`  
+
+We can show our deployments: `kubectl get deployments`
+
+## Pods vs Deployments
+
+**Self-healing**:  
+When you delete a pod outside deployment context, it doesn't get replaced.  
+When you delete a pod that's part of a deployment, it gets replaced.  
+
+**Scaling**:  
+Deployments can be scaled, not pods:  
+`kubectl scale deployment demo-deploy --replicas 3`  
 
 
 
-100/170 (59%)
+103/170 (60%)
