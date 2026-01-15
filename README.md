@@ -807,6 +807,16 @@ There's no limit to the number of labels we can put on a given object.
 When we'll talk about deployments and services, you'll understand that many types of K8s objects 
 depend on labels, and that's why it's important to be proficient at manipulating labels.  
 
+One last command that is very useful with labels:  
+`kubectl get pods -L alta3`  
+
+The `-L` flag allows us to add a column for the specified label key.  
+In our example, if the specified label is applied to one of our pods, it will show the corresponding value in the dedicated column.  
+
+- To retrieve pods with a specific label: `kubectl get pods --selector=<label>`  
+- To retrieve pods with a specific value for a given label: `kubectl get pods --selector=<label>=<value>`  
 
 
-97/170 (57%)
+
+
+100/170 (59%)
