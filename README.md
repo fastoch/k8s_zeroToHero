@@ -845,9 +845,14 @@ Deployments can be scaled, not pods:
 
 ## Deployment manifest
 
-In a deployment manifest, we don't need to name the pods, they'll be named after the replicaset that makes them.  
+Deployments were invented after ReplicaSets, they do everything ReplicaSets can do plus:
+- version control (rolling updates & rollbacks)
+- zero down time
+- accepts any changes made to the source YAML file
 
 The hierarchy is Deployment > ReplicaSet > Pods > containers.  
+
+In a deployment manifest, we don't need to name the pods, they'll be named after the replicaset that makes them.  
 
 Here's an example manifest for a deployment:
 ```yaml
@@ -872,6 +877,20 @@ spec:
 
 The `selector: matchLabels:` section says "any pod that has that label on it belongs to that deployment".  
 
+## Deployment Rollout Strategy: Rolling Update
+
+Let's say you have one ReplicaSet that counts 3 pods.  
+The rolling update would go that way:
+- create a duplicate ReplicaSet = ReplicaSet2
+- start a new pod inside ReplicaSet2
+- delete one pod inside ReplicaSet1
+- start a second pod inside ReplicaSet2
+- delete one pod inside ReplicaSet1
+- start a third pod inside ReplicaSet2
+- delete the last pod inside ReplicaSet1
+- make ReplicaSet2 the new production ReplicaSet
+
+ReplicaSet1 does not get deleted, it is kept in case we need to roll back.  
 
 
-110/170 (64%)
+115/170 (67%)
