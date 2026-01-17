@@ -821,7 +821,7 @@ In our example, if the specified label is applied to one of our pods, it will sh
 **Definition**:  
 A deployment is a declarative higher-level object that describes the desired state for a set of pods (via a ReplicaSet).  
 
-Inside production environments, Pods are rarely created on their own.  
+Inside production environments, Pods are rarely launched on a cluster by themselves.  
 Instead, they are made as part of deployments.  
 
 Deployments allow us to create multiple clones of the same pod, called **replicas**.  
@@ -843,6 +843,35 @@ When you delete a pod that's part of a deployment, it gets replaced.
 Deployments can be scaled, not pods:  
 `kubectl scale deployment demo-deploy --replicas 3`  
 
+## Deployment manifest
+
+In a deployment manifest, we don't need to name the pods, they'll be named after the replicaset that makes them.  
+
+The hierarchy is Deployment > ReplicaSet > Pods > containers.  
+
+Here's an example manifest for a deployment:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels: 
+    app: nginx
+spec: 
+  replicas: 3
+  selector:
+    matchLabels: 
+      app: nginx
+  template:
+    metadata: 
+      labels: 
+        app: nginx
+    spec: 
+      containers:
+```
+
+The `selector: matchLabels:` section says "any pod that has that label on it belongs to that deployment".  
 
 
-103/170 (60%)
+
+110/170 (64%)
