@@ -873,6 +873,10 @@ spec:
         app: nginx
     spec: 
       containers:
+      - name: nginx
+        image: nginx:1.14.2
+      - name: redis
+        image: redis
 ```
 
 The `selector: matchLabels:` section says "any pod that has that label on it belongs to that deployment".  
@@ -892,5 +896,39 @@ The rolling update would go that way:
 
 ReplicaSet1 does not get deleted, it is kept in case we need to roll back.  
 
+## Rollout history
 
-115/170 (67%)
+The following command shows all revisions that the specified deployment has gone through:  
+`kubectl rollout history deployment demo-deploy`  
+
+To roll back to the previous revision:  
+`kubectl rollout undo deployment demo-deploy`  
+
+# Storage
+
+K8s is storage-agnostic.  
+But you need to teach your cluster how to handle the storage that you want to use.  
+For that, we need to create a **StorageClass**.  
+
+## StorageClass
+
+A StorageClass defines different types of storage that cluster administrators can offer to applications.  
+It enables dynamic provisioning of **PersistentVolumes** (PVs) based on specified parameters like performance levels, 
+backup policies, or reclaim behavior.  
+
+StorageClasses abstract underlying storage systems, allowing pods to request storage via **PersistentVolumeClaims** (PVCs).  
+Think of a PVC as the key to access a specific storage (a PersistentVolume).  
+
+- You add a volume to the pod. That volume represents the PVC.
+- You mount that volume to a directory inside the container (mountPath)
+- And anything that gets saved inside that directory will be 
+
+The PVC (volume) is connected to a specific PersistentVolume that lives on the chosen storage space (AWS for example).  
+The storage space of your choice is recognized by K8s thanks to the StorageClass you've defined.  
+
+You can tie the same storage to multiple containers, especially if we're talking about pods that are part of the same 
+deployment.  
+
+
+
+124/170 (73%)
