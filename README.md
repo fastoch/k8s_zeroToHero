@@ -774,7 +774,9 @@ When a pod gets deleted, all of its logs are removed as well.
 # 22. K8s Labels
 
 Labels are tags for objects, used for grouping and operating on multiple objects simultaneously.  
-Labels are key-value pairs, as in this manifest:
+Labels are very important in Kubernetes.  
+
+Labels are key-value pairs, as shown in this manifest:
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -1156,16 +1158,30 @@ metadata:
   name: test-network-policy
   namespace: default
 spec:
-  podSelector:
+  podSelector: # what pods are we controlling?
+    matchLabels:
+      role: db
   policyTypes:
   - Ingress # incoming traffic
   - Egress  # outgoing traffic
   ingress:
   - from:
+    - ipBlock: # must be from this IP range to be allowed
+        cidr: 172.17.0.0/16
+        except:
+        - 172.17.1.0/24
+    - namespaceSelector: # OR must be from this namespace with this particular label
+        matchLabels: 
+          project: myproject
+    - podSelector: # OR must be from pods with this label to be allowed
+        matchLabels: 
+          role: frontend
+    ports:
+    - protocol: TCP
   egress:
   - to:
 ```
-This network policy will only affect the pods that live inside the default namespace.  
+This network policy will only affect the pods that live inside the `default` namespace and have the label `role: db`.  
 
 
 ## 3 types of services
@@ -1173,4 +1189,4 @@ This network policy will only affect the pods that live inside the default names
 - 
 
 
-141/170 (82%)
+145/170 (85%)
