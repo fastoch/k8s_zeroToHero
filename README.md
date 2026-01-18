@@ -1122,7 +1122,7 @@ spec:
 ## K8s Service
 
 Every time a pod gets replaced, its IP address changes.  
-In order to make a deployment available as a stable network endpoint, we need to use services.  
+In order to make our deployment available as a stable network endpoint, we need to make a service out of it.  
 
 Let's delete our previous deployment and recreate it as follows:
 ```bash
@@ -1130,17 +1130,30 @@ kubectl delete deployment demo-deploy
 kubectl create deployment demo-deploy --image=nginx --port=80 --replicas=3
 ```
 The `--port=80` flag specifies the port that the container in each pod exposes for incoming traffic.  
+It is required to then expose our deployment and turn it into a service.  
 
 Now, we can expose our deployment and make it available as a service:
 ```bash
 kubectl expose deployment demo-deploy
 kubectl get services
 ```
+
 Our newly created service has its own stable IP address.  
+And we can run `kubectl describe svc demo-deploy` to see that: 
+- our service has a static IP address 
+- our 3 pods have dynamic IP addresses that change every time we scale our deployment up or down  
+
+## Network Policies
+
+Thanks to K8s services, our deployments and the pods they contain can be reached by the outside world.  
+But pods within a given deployment can also talk to each other, and we need to set some rules to restrict that.  
+
+A NetworkPolicy, like any other K8s object, is defined through a manifest.  
+
 
 ## 3 types of services
 
 - 
 
 
-135/170 (79%)
+140/170 (82%)
