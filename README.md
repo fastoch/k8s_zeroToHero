@@ -1176,17 +1176,22 @@ spec:
     - podSelector: # OR must be from pods with this label to be allowed
         matchLabels: 
           role: frontend
-    ports:
+    ports: # you can only receive TCP traffic on port 6379 
     - protocol: TCP
+      port: 6379
   egress:
   - to:
+    - ipBlock: # you can only send traffic to this IP range
+        cidr: 10.0.0.0/24
+    ports: # you can only send TCP traffic using this port 
+    - protocol: TCP
+      port: 5978
 ```
 This network policy will only affect the pods that live inside the `default` namespace and have the label `role: db`.  
-
 
 ## 3 types of services
 
 - 
 
 
-145/170 (85%)
+147/170 (86%)
