@@ -1149,6 +1149,23 @@ Thanks to K8s services, our deployments and the pods they contain can be reached
 But pods within a given deployment can also talk to each other, and we need to set some rules to restrict that.  
 
 A NetworkPolicy, like any other K8s object, is defined through a manifest.  
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: 
+  name: test-network-policy
+  namespace: default
+spec:
+  podSelector:
+  policyTypes:
+  - Ingress # incoming traffic
+  - Egress  # outgoing traffic
+  ingress:
+  - from:
+  egress:
+  - to:
+```
+This network policy will only affect the pods that live inside the default namespace.  
 
 
 ## 3 types of services
@@ -1156,4 +1173,4 @@ A NetworkPolicy, like any other K8s object, is defined through a manifest.
 - 
 
 
-140/170 (82%)
+141/170 (82%)
