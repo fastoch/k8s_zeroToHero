@@ -1117,5 +1117,30 @@ spec:
 - Deleting the Deployment leaves the PVC and PV intact
 - Deleting the PVC will either delete or retain the PV based on reclaimPolicy
 
+# 25. K8s Networking
 
-133/170 (77%)
+## K8s Service
+
+Every time a pod gets replaced, its IP address changes.  
+In order to make a deployment available as a stable network endpoint, we need to use services.  
+
+Let's delete our previous deployment and recreate it as follows:
+```bash
+kubectl delete deployment demo-deploy
+kubectl create deployment demo-deploy --image=nginx --port=80 --replicas=3
+```
+The `--port=80` flag specifies the port that the container in each pod exposes for incoming traffic.  
+
+Now, we can expose our deployment and make it available as a service:
+```bash
+kubectl expose deployment demo-deploy
+kubectl get services
+```
+Our newly created service has its own stable IP address.  
+
+## 3 types of services
+
+- 
+
+
+135/170 (79%)
