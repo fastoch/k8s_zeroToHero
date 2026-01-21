@@ -1147,7 +1147,7 @@ And we can run `kubectl describe svc demo-deploy` to see that:
 
 ## Network Policies
 
-Thanks to K8s services, our deployments and the pods they contain can be reached by the outside world.  
+Thanks to K8s services, our deployments and their pods can be reached by the outside world.  
 But pods within a given deployment can also talk to each other, and we need to set some rules to restrict that.  
 
 A NetworkPolicy, like any other K8s object, is defined through a manifest.  
@@ -1188,10 +1188,20 @@ spec:
       port: 5978
 ```
 This network policy will only affect the pods that live inside the `default` namespace and have the label `role: db`.  
+`podSelector: {}` would mean "apply this network policy to all pods".  
 
-## 3 types of services
+Kubernetes NetworkPolicy follows a default-allow model by default.  
+Without any NetworkPolicy applied to a pod, all ingress and egress traffic is permitted across the cluster.  
 
-- 
+Policies become restrictive only when at least one NetworkPolicy selects the pod.  
+At that point, traffic is allowed if any matching policy explicitly permits it; unspecified traffic is then denied.  
+
+To achieve a true **default-deny** (where anything not specified is prohibited):
+- deploy an explicit "default deny" policy first, such as one with an empty `podSelector: {}` and no ingress/egress rules
+- then add allow rules as needed.
 
 
-147/170 (86%)
+
+
+
+153/170 (90%)
