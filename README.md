@@ -1226,11 +1226,41 @@ There's a mapping between the service's port and the targeted container's port.
 Since it's possible for pods to have multiple containers, we can map multiple ports on the same service 
 to route traffic to multiple containers/applications.  
 
-## Node ports
+## ClusterIP service
 
 Let's say we have 2 pods on the same node, and pod1 wants to talk to pod2.  
 Pod2 needs to be exposed by a service in order for pod1 to reach it.  
 
+If pod2 is exposed, then pod1 can ask the kube-proxy to connect it to pod2.  
+The kube-proxy will consult its IP table and look for the IP address of the service that exposes pod2.  
+Once it finds that IP address, requests from pod 1 can be routed to pod2.  
+
+Note that there is a kube-proxy on every node inside your cluster.  
+And all kube-proxy share the same IP table.  
+
+---
+
+If pod1 wants to talk to a deployment that has 3 replicas (3 identical pods), 
+then the kube-proxy will set up the rules for how this traffic gets routed.  
+Since there are 3 pods in the targeted deployment, the kube-proxy will load balance requests from pod1 across those 3 pods.  
+By default, load balancing will be of type "round-robin".  
+
+Note that kube-proxy also makes sure a pod is healthy before routing any traffic to it.  
+
+--- 
+
+All of that pod-to-pod communication, be it within the same node on between different nodes, is possible 
+thanks to a special service called a "**ClusterIP**".  
+
+There are 3 types of services:
+- ClusterIP
+- NodePort
+- LoadBalancer
+
+## NodePort service
 
 
-154/170 (90%)
+
+## LoadBalancer
+
+160/170 (94%)
