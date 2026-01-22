@@ -1150,7 +1150,7 @@ And we can run `kubectl describe svc demo-deploy` to see that:
 Thanks to K8s services, our deployments and their pods can be reached by the outside world.  
 But pods within a given deployment can also talk to each other, and we need to set some rules to restrict that.  
 
-A NetworkPolicy, like any other K8s object, is defined through a manifest.  
+A NetworkPolicy, like any other K8s object, is defined through a manifest, such as this one:  
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1190,18 +1190,47 @@ spec:
 This network policy will only affect the pods that live inside the `default` namespace and have the label `role: db`.  
 `podSelector: {}` would mean "apply this network policy to all pods".  
 
-Kubernetes NetworkPolicy follows a default-allow model by default.  
+---
+
+Kubernetes NetworkPolicies follow a default-allow model by default.  
 Without any NetworkPolicy applied to a pod, all ingress and egress traffic is permitted across the cluster.  
 
-Policies become restrictive only when at least one NetworkPolicy selects the pod.  
-At that point, traffic is allowed if any matching policy explicitly permits it; unspecified traffic is then denied.  
+Policies become restrictive only when at least one NetworkPolicy selects a pod.  
+At that point, traffic to and from that pod is allowed if any matching policy explicitly permits it; unspecified traffic is then denied.  
 
 To achieve a true **default-deny** (where anything not specified is prohibited):
 - deploy an explicit "default deny" policy first, such as one with an empty `podSelector: {}` and no ingress/egress rules
-- then add allow rules as needed.
+- then add allow rules as needed
+
+## Precision about K8s Services
+
+We previously made a service by using the `kubectl expose` command.  
+Now let's see how a service manifest looks like:
+```yaml
+apiVersion: v1
+kind: Service
+metadata: 
+  name: demo-svc
+spec: 
+  selector:
+    demo: pods
+  ports:
+  - protocol: TCP
+    port: 3423 # service's port (exposed to the outside world)
+    targetPort: 80 # container's port (hidden from the outside world)
+  - protocol: TCP
+    port: 4444
+    targetPort: 8888
+```
+There's a mapping between the service's port and the targeted container's port.  
+Since it's possible for pods to have multiple containers, we can map multiple ports on the same service 
+to route traffic to multiple containers/applications.  
+
+## Node ports
+
+Let's say we have 2 pods on the same node, and pod1 wants to talk to pod2.  
+Pod2 needs to be exposed by a service in order for pod1 to reach it.  
 
 
 
-
-
-153/170 (90%)
+154/170 (90%)
