@@ -1226,7 +1226,7 @@ There's a mapping between the service's port and the targeted container's port.
 Since it's possible for pods to have multiple containers, we can map multiple ports on the same service 
 to route traffic to multiple containers/applications.  
 
-## ClusterIP service
+## ClusterIP (internal traffic)
 
 Let's say we have 2 pods on the same node, and pod1 wants to talk to pod2.  
 Pod2 needs to be exposed by a service in order for pod1 to reach it.  
@@ -1257,10 +1257,30 @@ There are 3 types of K8s services:
 - NodePort
 - LoadBalancer
 
-## NodePort service
+## NodePort (external traffic)
 
+NodePort is the most primitive type of Service.  
 
+It's a Kubernetes Service type that exposes an application running on a cluster to external traffic by opening 
+a specific port on every node's IP address.  
+
+Kubernetes assigns a static port (typically in the 30000-32767 range) on all nodes, forwarding traffic from `<node-ip>:<node-port>` 
+to the Service's Pods via kube-proxy rules like iptables or IPVS.  
+
+You access the Service using any node's IP and the NodePort, enabling load balancing across Pods even if they're on different nodes.  
+
+NodePort suits dev/testing or custom load balancers but isn't ideal for production due to high port usage and firewall needs.  
+For production, prefer **LoadBalancer** or **Ingress** over NodePort.
 
 ## LoadBalancer
 
-160/170 (94%)
+K8s does not come with LoadBalancers, it's not a native feature.  
+
+Kubernetes LoadBalancer services expose applications externally via **cloud load balancers**.  
+They distribute incoming traffic across pods for high availability and performance.  
+This service type automatically provisions an external IP in supported cloud environments.  
+
+LoadBalancer services create a stable external IP address that routes traffic to matching pods based on selectors.  
+
+
+164/170 (96%)
