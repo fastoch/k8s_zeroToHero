@@ -1249,10 +1249,10 @@ Note that kube-proxy also makes sure a pod is healthy before routing any traffic
 
 --- 
 
-All of that pod-to-pod communication, be it within the same node on between different nodes, is possible 
+All of that **pod-to-pod communication**, be it within the same node or between different nodes, is possible 
 thanks to a special service called a "**ClusterIP**".  
 
-There are 3 types of services:
+There are 3 types of K8s services:
 - ClusterIP
 - NodePort
 - LoadBalancer
