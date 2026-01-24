@@ -1243,7 +1243,7 @@ And all kube-proxy share the same IP table.
 If pod1 wants to talk to a deployment that has 3 replicas (3 identical pods), 
 then the kube-proxy will set up the rules for how this traffic gets routed.  
 Since there are 3 pods in the targeted deployment, the kube-proxy will load balance requests from pod1 across those 3 pods.  
-By default, load balancing will be of type "round-robin".  
+By default, load balancing will be of type "round-robin", which is not true load balancing.  
 
 Note that kube-proxy also makes sure a pod is healthy before routing any traffic to it.  
 
@@ -1270,9 +1270,13 @@ to the Service's Pods via kube-proxy rules like iptables or IPVS.
 You access the Service using any node's IP and the NodePort, enabling load balancing across Pods even if they're on different nodes.  
 
 NodePort suits dev/testing or custom load balancers but isn't ideal for production due to high port usage and firewall needs.  
-For production, prefer **LoadBalancer** or **Ingress** over NodePort.
+For production, prefer **LoadBalancer** or **Ingress** over NodePort.  
 
-## LoadBalancer
+The following command creates a NodePort service to expose the specified pod:  
+`kubectl expose pod pod_name --type="NodePort"`  
+If you don't specify the type, the `kubectl expose` command will create a ClusterIP service.  
+
+## LoadBalancer (external traffic, cloud-based service)
 
 K8s does not come with LoadBalancers, it's not a native feature.  
 
@@ -1282,5 +1286,8 @@ This service type automatically provisions an external IP in supported cloud env
 
 LoadBalancer services create a stable external IP address that routes traffic to matching pods based on selectors.  
 
+Instead of using the round-robin method, which simply consists in routing traffic to pods by cycling through them, 
+a LoadBalancer makes an educated decision based on available resources.  
 
-164/170 (96%)
+Since LoadBalancers also use NodePorts, they can choose which ever node they want, then access the kube-proxy IPtable to 
+find the IP address of the desired pod. 
